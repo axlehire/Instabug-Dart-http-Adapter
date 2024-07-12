@@ -1,7 +1,7 @@
 # Changelog
 
-## Unreleased
-
+## [3.1.0]
+- Updates to latest Instabug dependencies
 - Enables `InstabugHttpClient` to wrap an internal `http` client.
 - Adds a filter capability for http logging
 
