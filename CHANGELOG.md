@@ -5,7 +5,7 @@
 - Enables `InstabugHttpClient` to wrap an internal `http` client.
 - Adds a filter capability for http logging
 
-## [3.2.1] - 7/05/2024
+## [3.2.0] - 7/24/2024
 
 - Update nexus to gojitsu
 
