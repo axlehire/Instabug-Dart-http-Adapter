@@ -8,9 +8,8 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:instabug_flutter/instabug_flutter.dart';
-import 'package:instabug_http_client/src/instabug_http_client.dart';
-import 'package:instabug_http_client/src/instabug_http_logger.dart';
+import 'package:instabug_http_client/instabug_http_client.dart';
+import 'package:instabug_http_client/instabug_http_logger.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -20,7 +19,6 @@ import 'instabug_http_client_test.mocks.dart';
   InstabugHttpLogger,
   InstabugHttpClient,
 ])
-@GenerateNiceMocks(<MockSpec<dynamic>>[MockSpec<NetworkLogger>()])
 Future<void> main() async {
   const Map<String, String> fakeResponse = <String, String>{
     'id': '123',
@@ -29,17 +27,15 @@ Future<void> main() async {
   late Uri url;
   final http.Response mockedResponse =
       http.Response(json.encode(fakeResponse), 200);
-  late MockInstabugHttpLogger mockHttpLogger;
 
   setUp(() {
     url = Uri.parse('http://www.instabug.com');
-    mockHttpLogger = MockInstabugHttpLogger();
   });
 
   InstabugHttpClient buildClient({http.Client? mockClient}) {
     final InstabugHttpClient instabugHttpClient =
-        InstabugHttpClient(client: mockClient ?? MockInstabugHttpClient())
-          ..logger = mockHttpLogger;
+        InstabugHttpClient(client: mockClient ?? MockInstabugHttpClient());
+    instabugHttpClient.logger = MockInstabugHttpLogger();
 
     return instabugHttpClient;
   }
@@ -51,8 +47,8 @@ Future<void> main() async {
     final http.Response result = await instabugHttpClient.get(url);
     expect(result, isInstanceOf<http.Response>());
     expect(result, mockedResponse);
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(1);
   });
 
@@ -63,8 +59,8 @@ Future<void> main() async {
     final http.Response result = await instabugHttpClient.head(url);
     expect(result, isInstanceOf<http.Response>());
     expect(result, mockedResponse);
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(1);
   });
 
@@ -75,8 +71,8 @@ Future<void> main() async {
     final http.Response result = await instabugHttpClient.delete(url);
     expect(result, isInstanceOf<http.Response>());
     expect(result, mockedResponse);
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(1);
   });
 
@@ -87,8 +83,8 @@ Future<void> main() async {
     final http.Response result = await instabugHttpClient.patch(url);
     expect(result, isInstanceOf<http.Response>());
     expect(result, mockedResponse);
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(1);
   });
 
@@ -99,8 +95,8 @@ Future<void> main() async {
     final http.Response result = await instabugHttpClient.post(url);
     expect(result, isInstanceOf<http.Response>());
     expect(result, mockedResponse);
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(1);
   });
 
@@ -111,8 +107,8 @@ Future<void> main() async {
     final http.Response result = await instabugHttpClient.put(url);
     expect(result, isInstanceOf<http.Response>());
     expect(result.body, mockedResponse.body);
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(1);
   });
 
@@ -129,9 +125,7 @@ Future<void> main() async {
 
   test('expect instabug http client READBYTES to return response', () async {
     final Uint8List response = Uint8List(3);
-    final InstabugHttpClient instabugHttpClient = buildClient(
-        mockClient:
-            MockClient((_) async => http.Response.bytes(response, 200)));
+    final InstabugHttpClient instabugHttpClient = buildClient(mockClient: MockClient((_) async => http.Response.bytes(response, 200)));
 
     final Uint8List result = await instabugHttpClient.readBytes(url);
     expect(result, isInstanceOf<Uint8List>());
@@ -185,8 +179,8 @@ Future<void> main() async {
     for (int i = 0; i < 10000; i++) {
       await instabugHttpClient.get(url);
     }
-    verify(mockHttpLogger.onLogger(mockedResponse,
-            startTime: anyNamed('startTime')))
+    verify(instabugHttpClient.logger
+            .onLogger(mockedResponse, startTime: anyNamed('startTime')))
         .called(10000);
   });
 }
