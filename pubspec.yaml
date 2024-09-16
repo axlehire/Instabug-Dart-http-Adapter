@@ -4,6 +4,7 @@ description:
   with http Package and sends them to the report that will be sent to the dashboard.
 version: 3.1.0
 homepage: https://github.com/Instabug/Instabug-Flutter#readme
+publish_to: http://nexus.axlehire.com:7777
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -13,6 +14,7 @@ dependencies:
     sdk: flutter
   http: ^1.2.1
   instabug_flutter: '>=11.0.0 <14.0.0'
+  meta: ^1.12.0
   watcher: ^1.1.0
 
 dev_dependencies:
