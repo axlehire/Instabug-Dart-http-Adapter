@@ -1,9 +1,9 @@
 # Changelog
 
-## [3.1.0]
-- Updates to latest Instabug dependencies
+## Unreleased
+
 - Enables `InstabugHttpClient` to wrap an internal `http` client.
-- Adds a filter capability for http logging
+- Add support for `http` v1 ([#20](https://github.com/Instabug/Instabug-Dart-http-Adapter/pull/20)).
 
 ## [2.4.0] - 7/05/2024
 
